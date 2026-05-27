@@ -30,7 +30,7 @@ export async function checkRateLimit(req: NextRequest): Promise<RateLimitResult>
   const limiter = new Ratelimit({
     redis,
     limiter: Ratelimit.fixedWindow(5, "1 d"),
-    prefix: "rl:book-rec"
+    prefix: "rl:shiguang"
   });
   const ip = clientIp(req);
   const r = await limiter.limit(ip);

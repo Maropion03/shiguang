@@ -73,7 +73,7 @@ Next.js 15 · React 19 · TypeScript · Tailwind CSS · DeepSeek V4 Flash · Ups
 
 ### 一键自部署
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMaropion03%2Fbook-rec&env=DEEPSEEK_API_KEY,DEEPSEEK_MODEL&envDescription=DeepSeek+API+%E5%87%AD%E6%8D%AE&envLink=https%3A%2F%2Fplatform.deepseek.com%2Fapi_keys&project-name=book-rec&repository-name=book-rec)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMaropion03%2Fshiguang&env=DEEPSEEK_API_KEY,DEEPSEEK_MODEL&envDescription=DeepSeek+API+%E5%87%AD%E6%8D%AE&envLink=https%3A%2F%2Fplatform.deepseek.com%2Fapi_keys&project-name=shiguang&repository-name=shiguang)
 
 填两个变量(`DEEPSEEK_API_KEY` 与 `DEEPSEEK_MODEL=deepseek-v4-flash`)即可上线。
 如需跨实例持久化分享链接,在项目 Storage 里加一个 Upstash Redis 实例 Connect 即可。
@@ -81,8 +81,8 @@ Next.js 15 · React 19 · TypeScript · Tailwind CSS · DeepSeek V4 Flash · Ups
 ### 本地开发
 
 ```bash
-git clone https://github.com/Maropion03/book-rec.git
-cd book-rec
+git clone https://github.com/Maropion03/shiguang.git
+cd shiguang
 npm install
 cp .env.example .env.local   # 填入 DEEPSEEK_API_KEY
 npm run dev
