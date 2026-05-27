@@ -81,19 +81,11 @@ npm run dev
 
 ## 部署到 Vercel
 
-```bash
-# 1. 推到 GitHub
-gh repo create book-rec --public --source=. --push
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMaropion03%2Fbook-rec&env=DEEPSEEK_API_KEY,DEEPSEEK_MODEL&envDescription=DeepSeek+API+%E5%87%AD%E6%8D%AE%EF%BC%9ADEEPSEEK_API_KEY+%E5%9C%A8+platform.deepseek.com+%E7%94%B3%E8%AF%B7%EF%BC%9BDEEPSEEK_MODEL+%E5%A1%AB+deepseek-v4-flash&envLink=https%3A%2F%2Fplatform.deepseek.com%2Fapi_keys&project-name=book-rec&repository-name=book-rec)
 
-# 2. 在 vercel.com 导入仓库,框架自动识别为 Next.js
-# 3. 添加环境变量:
-#    DEEPSEEK_API_KEY  = sk-xxx
-#    DEEPSEEK_MODEL    = deepseek-v4-flash
-# 4. 部署后在 Storage → Marketplace 添加 Upstash Redis 并 Connect 到项目
-# 5. Redeploy 一次,让新 env 生效
-```
+点上面按钮 → 登录 Vercel → 填两个环境变量(`DEEPSEEK_API_KEY` · `DEEPSEEK_MODEL=deepseek-v4-flash`)→ Deploy,完成。
 
-详细 KV 与域名配置见 [`docs/DEPLOY.md`](docs/DEPLOY.md)(待补)。
+部署后若需要**跨实例持久化推荐结果**(让分享链接长期有效),在项目 **Storage → Marketplace → Upstash for Redis** 创建一个 Free 实例并 Connect 到本项目,变量 `KV_REST_API_URL` 与 `KV_REST_API_TOKEN` 会自动注入。完成后 Redeploy 一次即可生效。
 
 ---
 
