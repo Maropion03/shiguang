@@ -6,9 +6,16 @@
 
 回答五道题,让 AI 顺着你此刻的心境,从真实存在的中文书中拾起三本。
 
-### [▸  立刻试一下  ◂](https://book-rec-medusa.vercel.app)
+### [▸  立刻试一下  ◂](https://shiguang-maropion.vercel.app)
 
-![hero](https://book-rec-medusa.vercel.app/opengraph-image)
+![hero](https://shiguang-maropion.vercel.app/opengraph-image)
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=fff)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=fff)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss&logoColor=fff)](https://tailwindcss.com)
+[![DeepSeek](https://img.shields.io/badge/LLM-DeepSeek_V4_Flash-4D6BFE)](https://platform.deepseek.com)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-000?logo=vercel)](https://vercel.com)
+![License](https://img.shields.io/badge/license-MIT-A33F2A)
 
 </div>
 
@@ -42,7 +49,7 @@
 |---|---|
 | 想安静下来 · 喜欢是枝裕和、《漫长的季节》 | 《枕草子》 · 《雪国》 · 《猎人们》 |
 | 想被搅动一下 · 喜欢博尔赫斯、《2666》 | 《西西弗神话》 · 《地下室手记》 · 《荒原狼》 |
-| 想被轻轻接住 · 喜欢《步履不停》 | [/r/0GntmxOnz-](https://book-rec-medusa.vercel.app/r/0GntmxOnz-) |
+| 想被轻轻接住 · 喜欢《步履不停》 | [/r/0GntmxOnz-](https://shiguang-maropion.vercel.app/r/0GntmxOnz-) |
 
 9 本推荐 · **9 本豆瓣可查证** · 推荐理由全部紧扣读者原话。
 
