@@ -8,7 +8,7 @@
 
 ### [▸  立刻试一下  ◂](https://shiguang-maropion.vercel.app)
 
-![hero](https://shiguang-maropion.vercel.app/opengraph-image)
+![hero](./hero.png)
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-000?logo=nextdotjs&logoColor=fff)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=fff)](https://www.typescriptlang.org)
