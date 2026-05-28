@@ -95,7 +95,10 @@ export default async function ResultPage({
         {/* 操作 */}
         <div className="mt-20 pt-10 border-t border-ink/10 flex flex-col items-center gap-6">
           <ShareButton id={rec.id} />
-          <ReshuffleButton answers={rec.answers} />
+          <ReshuffleButton
+            answers={rec.answers}
+            exclude={rec.books.map((b) => b.title)}
+          />
           <Link
             href="/ask"
             className="text-ink-mist hover:text-ink text-sm tracking-zen transition-colors"

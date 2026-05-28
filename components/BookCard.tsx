@@ -22,8 +22,8 @@ export default function BookCard({
       <p className="text-ink-mist text-sm tracking-wide mb-5">{book.author}</p>
 
       {book.oneLiner && (
-        <p className="text-ink-soft text-base font-serif leading-loose mb-6 italic">
-          {book.oneLiner}
+        <p className="text-ink-soft text-base font-serif leading-loose mb-6">
+          「{book.oneLiner}」
         </p>
       )}
 

@@ -6,7 +6,13 @@ import { track } from "@vercel/analytics";
 import type { Answers } from "@/lib/questions";
 import Seeking from "./Seeking";
 
-export default function ReshuffleButton({ answers }: { answers: Answers }) {
+export default function ReshuffleButton({
+  answers,
+  exclude
+}: {
+  answers: Answers;
+  exclude?: string[];
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -19,7 +25,7 @@ export default function ReshuffleButton({ answers }: { answers: Answers }) {
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ answers })
+        body: JSON.stringify({ answers, exclude })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "重抽失败");

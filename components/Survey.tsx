@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
 import { QUESTIONS, type Answers } from "@/lib/questions";
@@ -10,12 +10,52 @@ import TextInput from "./questions/TextInput";
 import CompoundWeightField from "./questions/CompoundWeightField";
 import Seeking from "./Seeking";
 
+const DRAFT_KEY = "shiguang.survey.draft.v1";
+
+type Draft = { step: number; answers: Answers };
+
+function readDraft(): Draft | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw) as Draft;
+    if (typeof d.step !== "number" || !d.answers) return null;
+    // step 越界容错——题目可能改过版本
+    if (d.step < 0 || d.step >= QUESTIONS.length) d.step = 0;
+    return d;
+  } catch {
+    return null;
+  }
+}
+
 export default function Survey() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hydrated = useRef(false);
+
+  // 进入页面时从 localStorage 恢复草稿——避免误刷新就丢答题进度
+  useEffect(() => {
+    const d = readDraft();
+    if (d) {
+      setStep(d.step);
+      setAnswers(d.answers);
+    }
+    hydrated.current = true;
+  }, []);
+
+  // 每次答案/步数变化时落到 localStorage
+  useEffect(() => {
+    if (!hydrated.current) return;
+    try {
+      window.localStorage.setItem(DRAFT_KEY, JSON.stringify({ step, answers }));
+    } catch {
+      // 忽略 quota / 隐私模式失败
+    }
+  }, [step, answers]);
 
   const total = QUESTIONS.length;
   const q = QUESTIONS[step];
@@ -69,6 +109,11 @@ export default function Survey() {
         throw new Error(data?.error || "推荐生成失败,请稍后再试");
       }
       track("submit_success", { id: data.id });
+      try {
+        window.localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        // ignore
+      }
       router.push(`/r/${data.id}`);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "未知错误";

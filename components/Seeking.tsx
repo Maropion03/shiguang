@@ -36,7 +36,7 @@ export default function Seeking() {
       </p>
 
       <p className="text-ink-wash text-xs tracking-wider mt-16">
-        通常约需 5 – 10 秒
+        通常约需 10 – 20 秒
       </p>
     </div>
   );
