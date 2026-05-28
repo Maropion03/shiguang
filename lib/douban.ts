@@ -3,7 +3,7 @@
 // 调用方应将这本书标记为"未验证"而不是丢弃,以免推荐数量不足。
 
 const SEARCH_URL = "https://search.douban.com/book/subject_search";
-const TIMEOUT_MS = 6000;
+const TIMEOUT_MS = 4000;
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";

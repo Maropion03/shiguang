@@ -87,13 +87,21 @@ export type RawBook = {
   reason: string;
 };
 
-export async function generateRecommendations(answers: Answers): Promise<RawBook[]> {
+export async function generateRecommendations(
+  answers: Answers,
+  exclude?: string[]
+): Promise<RawBook[]> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     throw new Error("未配置 DEEPSEEK_API_KEY,请在环境变量中配置后再试");
   }
 
-  const userPrompt = `读者此刻的状态:\n\n${summarizeAnswers(answers)}\n\n请按要求挑出 3 本书。`;
+  const excludeLine =
+    exclude && exclude.length > 0
+      ? `\n\n请**避开**以下书名(读者已经看过或上一次抽到过):\n${exclude.map((t) => `《${t}》`).join("、")}\n挑出与之完全不同的另外 3 本。`
+      : "";
+
+  const userPrompt = `读者此刻的状态:\n\n${summarizeAnswers(answers)}${excludeLine}\n\n请按要求挑出 3 本书。`;
 
   const res = await fetch(ENDPOINT, {
     method: "POST",

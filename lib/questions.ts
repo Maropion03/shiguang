@@ -96,7 +96,7 @@ export const QUESTIONS: Question[] = [
     id: "freeform",
     kind: "text",
     title: "还有想补充的吗?",
-    subtitle: "随手写一句,留白也行",
+    subtitle: "随手写一句,留白也行。注:此项会出现在分享页,涉及隐私的话请简略",
     placeholder: "比如:不要太长 / 想看东亚作者 / 别再给我推卡夫卡了……",
     optional: true,
     maxLength: 300

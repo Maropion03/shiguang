@@ -1,9 +1,13 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-prose w-full text-center animate-fade-in">
+        <div className="flex justify-center mb-6">
+          <Logo size={36} />
+        </div>
         <p className="text-ink-mist tracking-zen text-xs uppercase mb-12">
           shíguāng · 拾光
         </p>

@@ -13,14 +13,17 @@ async function loadCJKFont(text: string): Promise<ArrayBuffer | null> {
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
       }
     }).then((r) => r.text());
-    const m = css.match(/src:\s*url\(([^)]+)\)/);
-    if (!m) return null;
-    const fontUrl = m[1].replace(/['"]/g, "");
+    const woff2 = [...css.matchAll(/src:\s*url\(([^)]+)\)\s*format\(['"]?woff2['"]?\)/g)];
+    const any = woff2[0] || css.match(/src:\s*url\(([^)]+)\)/);
+    if (!any) return null;
+    const fontUrl = (Array.isArray(any) ? any[1] : (any as RegExpMatchArray)[1]).replace(/['"]/g, "");
     return await fetch(fontUrl).then((r) => r.arrayBuffer());
   } catch {
     return null;
   }
 }
+
+export const revalidate = 86400;
 
 export default async function OG() {
   const text = "拾光 SHÍGUĀNG为此刻的你拾起一本书答几道题让心绪为你引路";
@@ -41,23 +44,30 @@ export default async function OG() {
           position: "relative"
         }}
       >
-        {/* 印章 */}
+        {/* logo:一页书 + 朱砂印 */}
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 84,
-            height: 84,
-            border: "3px solid #A33F2A",
-            color: "#A33F2A",
-            fontSize: 30,
+            width: 88,
+            height: 120,
+            border: "3px solid #1F1A17",
             transform: "rotate(-3deg)",
-            borderRadius: 4,
+            position: "relative",
+            display: "flex",
             marginBottom: 50
           }}
         >
-          拾
+          <div
+            style={{
+              position: "absolute",
+              top: 16,
+              right: 12,
+              width: 12,
+              height: 12,
+              borderRadius: 999,
+              background: "#A33F2A",
+              display: "flex"
+            }}
+          />
         </div>
 
         <div

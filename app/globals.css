@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap");
+/* 字体由 layout.tsx 在 <head> 中以 <link rel="stylesheet"> + preconnect 加载,
+   避免 @import 阻塞 CSSOM。 */
 
 :root {
   color-scheme: light;
@@ -56,18 +57,3 @@ body::before {
   );
 }
 
-/* 印章 */
-.seal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: 1.5px solid #a33f2a;
-  color: #a33f2a;
-  background: rgba(163, 63, 42, 0.04);
-  font-size: 0.85rem;
-  letter-spacing: 0;
-  border-radius: 2px;
-  transform: rotate(-3deg);
-}

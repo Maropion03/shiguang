@@ -16,14 +16,19 @@ async function loadCJKFont(text: string): Promise<ArrayBuffer | null> {
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
       }
     }).then((r) => r.text());
-    const m = css.match(/src:\s*url\(([^)]+)\)/);
-    if (!m) return null;
-    const fontUrl = m[1].replace(/['"]/g, "");
+    // 优先挑 woff2 格式的 url——Google Fonts CSS 里可能含多个回退格式,
+    // 取第一个 url() 在某些 UA 下会落到 EOT/SVG 这种 ImageResponse 不识别的格式。
+    const woff2 = [...css.matchAll(/src:\s*url\(([^)]+)\)\s*format\(['"]?woff2['"]?\)/g)];
+    const any = woff2[0] || css.match(/src:\s*url\(([^)]+)\)/);
+    if (!any) return null;
+    const fontUrl = (Array.isArray(any) ? any[1] : (any as RegExpMatchArray)[1]).replace(/['"]/g, "");
     return await fetch(fontUrl).then((r) => r.arrayBuffer());
   } catch {
     return null;
   }
 }
+
+export const revalidate = 86400;
 
 export default async function OG({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -81,19 +86,26 @@ export default async function OG({ params }: { params: Promise<{ id: string }> }
           </div>
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 64,
-              height: 64,
-              border: "2.5px solid #A33F2A",
-              color: "#A33F2A",
-              fontSize: 22,
+              width: 52,
+              height: 70,
+              border: "2.5px solid #1F1A17",
               transform: "rotate(-3deg)",
-              borderRadius: 4
+              position: "relative",
+              display: "flex"
             }}
           >
-            拾
+            <div
+              style={{
+                position: "absolute",
+                top: 9,
+                right: 7,
+                width: 8,
+                height: 8,
+                borderRadius: 999,
+                background: "#A33F2A",
+                display: "flex"
+              }}
+            />
           </div>
         </div>
 
