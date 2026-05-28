@@ -86,19 +86,26 @@ export default async function OG({ params }: { params: Promise<{ id: string }> }
           </div>
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 64,
-              height: 64,
-              border: "2.5px solid #A33F2A",
-              color: "#A33F2A",
-              fontSize: 22,
+              width: 52,
+              height: 70,
+              border: "2.5px solid #1F1A17",
               transform: "rotate(-3deg)",
-              borderRadius: 4
+              position: "relative",
+              display: "flex"
             }}
           >
-            拾
+            <div
+              style={{
+                position: "absolute",
+                top: 9,
+                right: 7,
+                width: 8,
+                height: 8,
+                borderRadius: 999,
+                background: "#A33F2A",
+                display: "flex"
+              }}
+            />
           </div>
         </div>
 

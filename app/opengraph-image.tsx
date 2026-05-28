@@ -44,23 +44,30 @@ export default async function OG() {
           position: "relative"
         }}
       >
-        {/* 印章 */}
+        {/* logo:一页书 + 朱砂印 */}
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 84,
-            height: 84,
-            border: "3px solid #A33F2A",
-            color: "#A33F2A",
-            fontSize: 30,
+            width: 88,
+            height: 120,
+            border: "3px solid #1F1A17",
             transform: "rotate(-3deg)",
-            borderRadius: 4,
+            position: "relative",
+            display: "flex",
             marginBottom: 50
           }}
         >
-          拾
+          <div
+            style={{
+              position: "absolute",
+              top: 16,
+              right: 12,
+              width: 12,
+              height: 12,
+              borderRadius: 999,
+              background: "#A33F2A",
+              display: "flex"
+            }}
+          />
         </div>
 
         <div

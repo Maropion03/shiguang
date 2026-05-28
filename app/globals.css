@@ -57,18 +57,3 @@ body::before {
   );
 }
 
-/* 印章 */
-.seal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: 1.5px solid #a33f2a;
-  color: #a33f2a;
-  background: rgba(163, 63, 42, 0.04);
-  font-size: 0.85rem;
-  letter-spacing: 0;
-  border-radius: 2px;
-  transform: rotate(-3deg);
-}

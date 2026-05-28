@@ -19,20 +19,26 @@ export default function Icon() {
       >
         <div
           style={{
-            width: 42,
-            height: 42,
-            border: "3px solid #A33F2A",
-            color: "#A33F2A",
-            fontSize: 24,
-            fontFamily: "serif",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            width: 32,
+            height: 44,
+            border: "2px solid #1F1A17",
             transform: "rotate(-3deg)",
-            borderRadius: 2
+            position: "relative",
+            display: "flex"
           }}
         >
-          拾
+          <div
+            style={{
+              position: "absolute",
+              top: 6,
+              right: 5,
+              width: 6,
+              height: 6,
+              borderRadius: 999,
+              background: "#A33F2A",
+              display: "flex"
+            }}
+          />
         </div>
       </div>
     ),
