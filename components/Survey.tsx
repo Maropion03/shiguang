@@ -160,6 +160,7 @@ export default function Survey() {
             options={q.options}
             value={answers[q.id as keyof Answers] as string | undefined}
             onChange={(v) => setAnswers({ ...answers, [q.id]: v })}
+            ariaLabel={q.title}
           />
         )}
         {q.kind === "compound_weight_field" && (
