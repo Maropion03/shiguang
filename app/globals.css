@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 字体由 layout.tsx 在 <head> 中以 <link rel="stylesheet"> + preconnect 加载,
-   避免 @import 阻塞 CSSOM。 */
+/* 字体走纯系统栈,不再从 Google Fonts 加载 ——
+   国内移动网络访问 fonts.googleapis.com 大概率被屏蔽 / 极慢,
+   会导致页面在手机上打不开或字体不渲染。
+   iOS Songti SC / Android Noto Serif CJK 都自带,有合理 fallback。 */
 
 :root {
   color-scheme: light;
@@ -13,9 +15,20 @@ html,
 body {
   background: #f5f1e8;
   color: #1f1a17;
-  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-family: "Songti SC", "STSong", "Source Han Serif SC",
+    "Noto Serif CJK SC", "Noto Serif SC", serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* 防止 iOS Safari 横屏字号自动放大 */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* iOS 默认点击高亮 → 极淡墨色,匹配产品调性 */
+input,
+textarea,
+button,
+a {
+  -webkit-tap-highlight-color: rgba(31, 26, 23, 0.08);
 }
 
 /* 纸纹·极淡的噪点 */

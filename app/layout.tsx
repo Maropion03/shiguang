@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -16,17 +16,23 @@ export const metadata: Metadata = {
   }
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#F5F1E8"
+};
+
+// 注:故意不从 Google Fonts 加载 Noto Serif SC / Sans SC ——
+// 国内移动网络下 fonts.googleapis.com 大概率被屏蔽或极慢,
+// <link rel="stylesheet"> 也是 render-blocking,会导致页面打不开。
+// 改用纯系统字体栈(iOS Songti SC / Android Noto Serif CJK fallback),
+// tailwind.config.ts 与 globals.css 已在 font-family 链里保留 "Noto Serif SC"
+// 作为占位,若用户本地装了这套字体会自动用上。
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap"
-        />
-      </head>
       <body className="min-h-screen relative">
         <div className="relative z-10">{children}</div>
         <Analytics />
