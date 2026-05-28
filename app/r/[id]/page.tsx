@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -7,7 +8,11 @@ import BookCard from "@/components/BookCard";
 import ShareButton from "@/components/ShareButton";
 import ReshuffleButton from "@/components/ReshuffleButton";
 
-export const dynamic = "force-dynamic";
+// 推荐记录是 immutable 的——一旦生成不变。让结果页享受 ISR,
+// 且用 React.cache() 让 generateMetadata 和 ResultPage 共享同一次 Redis 调用。
+export const revalidate = 86400;
+
+const getRec = cache(loadRecommendation);
 
 export async function generateMetadata({
   params
@@ -15,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const rec = await loadRecommendation(id);
+  const rec = await getRec(id);
   if (!rec) return { title: "拾光" };
   const titles = rec.books
     .slice(0, 3)
@@ -38,7 +43,7 @@ export default async function ResultPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const rec = await loadRecommendation(id);
+  const rec = await getRec(id);
   if (!rec) notFound();
 
   const date = new Date(rec.createdAt).toLocaleDateString("zh-CN", {

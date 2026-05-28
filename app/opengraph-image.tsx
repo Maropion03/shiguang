@@ -13,14 +13,17 @@ async function loadCJKFont(text: string): Promise<ArrayBuffer | null> {
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
       }
     }).then((r) => r.text());
-    const m = css.match(/src:\s*url\(([^)]+)\)/);
-    if (!m) return null;
-    const fontUrl = m[1].replace(/['"]/g, "");
+    const woff2 = [...css.matchAll(/src:\s*url\(([^)]+)\)\s*format\(['"]?woff2['"]?\)/g)];
+    const any = woff2[0] || css.match(/src:\s*url\(([^)]+)\)/);
+    if (!any) return null;
+    const fontUrl = (Array.isArray(any) ? any[1] : (any as RegExpMatchArray)[1]).replace(/['"]/g, "");
     return await fetch(fontUrl).then((r) => r.arrayBuffer());
   } catch {
     return null;
   }
 }
+
+export const revalidate = 86400;
 
 export default async function OG() {
   const text = "拾光 SHÍGUĀNG为此刻的你拾起一本书答几道题让心绪为你引路";
