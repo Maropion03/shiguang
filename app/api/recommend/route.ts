@@ -10,16 +10,26 @@ import type { BookRecommendation, RecommendationRecord } from "@/lib/types";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+const MOOD_VALUES = ["calm_needed", "be_moved", "be_warmed", "be_amused", "be_stirred"] as const;
+const MOTIVE_VALUES = ["escape", "company", "mirror", "growth", "knowledge"] as const;
+const FIELD_VALUES = [
+  "literary", "genre", "essay", "poetry", "history",
+  "philosophy", "psychology", "science", "biography", "art"
+] as const;
+
 const AnswersSchema = z.object({
-  mood: z.string().optional(),
-  motive: z.string().optional(),
+  mood: z.enum(MOOD_VALUES).optional(),
+  motive: z.enum(MOTIVE_VALUES).optional(),
   loved: z.string().max(500).optional(),
   weight: z.number().int().min(1).max(5).optional(),
-  fields: z.array(z.string()).max(5).optional(),
+  fields: z.array(z.enum(FIELD_VALUES)).max(5).optional(),
   freeform: z.string().max(500).optional()
 });
 
-const BodySchema = z.object({ answers: AnswersSchema });
+const BodySchema = z.object({
+  answers: AnswersSchema,
+  exclude: z.array(z.string().max(80)).max(10).optional()
+});
 
 export async function POST(req: NextRequest) {
   // 限速
@@ -48,7 +58,7 @@ export async function POST(req: NextRequest) {
   // 调 LLM
   let raw;
   try {
-    raw = await generateRecommendations(answers);
+    raw = await generateRecommendations(answers, body.exclude);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "推荐生成失败";
     return NextResponse.json({ error: msg }, { status: 502 });
@@ -79,8 +89,16 @@ export async function POST(req: NextRequest) {
   try {
     await saveRecommendation(record);
   } catch (e) {
-    // 存储失败仍返回结果,只是无法分享
+    // 存储失败时不能给前端 id——结果页 loadRecommendation 会 404。
+    // 把 books 内联返回,让前端可选地用 sessionStorage 兜底。
     console.error("saveRecommendation failed:", e);
+    return NextResponse.json(
+      {
+        error: "结果暂时无法保存,请稍后再试",
+        books: record.books
+      },
+      { status: 503 }
+    );
   }
 
   return NextResponse.json({ id: record.id });
