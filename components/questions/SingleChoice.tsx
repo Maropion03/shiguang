@@ -17,7 +17,7 @@ export default function SingleChoice({
 }) {
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  function onKeyDown(e: KeyboardEvent<HTMLDivElement>, i: number) {
+  function onKeyDown(e: KeyboardEvent<HTMLButtonElement>, i: number) {
     let next = i;
     if (e.key === "ArrowDown" || e.key === "ArrowRight") {
       next = (i + 1) % options.length;
