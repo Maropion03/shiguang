@@ -56,21 +56,22 @@ export default function SingleChoice({
             onClick={() => onChange(opt.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "w-full text-left px-6 py-5 border transition-all duration-300 group",
+              "relative w-full text-left px-6 py-5 border transition-all duration-300 group",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/40",
               active
-                ? "border-ink bg-paper-warm/60"
+                ? "border-ink bg-paper-deep shadow-[inset_3px_0_0_0_#A33F2A]"
                 : "border-ink/15 hover:border-ink/50 hover:bg-paper-warm/30"
             )}
           >
             <div className="flex items-baseline gap-4">
               <span
+                aria-hidden
                 className={cn(
                   "font-serif text-xs tracking-zen transition-colors",
                   active ? "text-vermilion" : "text-ink-wash group-hover:text-ink-mist"
                 )}
               >
-                ◯
+                {active ? "●" : "◯"}
               </span>
               <div className="flex-1">
                 <div className="font-serif text-ink text-base md:text-lg leading-relaxed">
