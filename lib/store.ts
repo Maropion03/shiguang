@@ -58,3 +58,36 @@ export async function loadRecommendation(id: string): Promise<RecommendationReco
     return null;
   }
 }
+
+// ---- 反馈回流 ----
+// 用户在结果页对每本书点「拾到了」/「不准」。
+// 一条反馈 = (recId, bookIndex, signal)。同一 (recId, bookIndex) 后写覆盖前写。
+// 本地开发落到 .data/feedback/<recId>.json;线上落 Redis hash `fb:<recId>`。
+// 暂不做聚合 / dashboard——先收集,有数据再说后续 prompt 反哺。
+
+export type FeedbackSignal = "positive" | "negative";
+
+const FB_FS_DIR = path.join(process.cwd(), ".data", "feedback");
+
+export async function saveFeedback(
+  recId: string,
+  bookIndex: number,
+  signal: FeedbackSignal
+): Promise<void> {
+  if (hasRemoteStore()) {
+    const redis = await getRedis();
+    await redis.hset(`fb:${recId}`, { [String(bookIndex)]: signal });
+    await redis.expire(`fb:${recId}`, TTL_SECONDS);
+    return;
+  }
+  await fs.mkdir(FB_FS_DIR, { recursive: true });
+  const file = path.join(FB_FS_DIR, `${recId}.json`);
+  let current: Record<string, FeedbackSignal> = {};
+  try {
+    current = JSON.parse(await fs.readFile(file, "utf-8"));
+  } catch {
+    // first feedback for this rec
+  }
+  current[String(bookIndex)] = signal;
+  await fs.writeFile(file, JSON.stringify(current, null, 2), "utf-8");
+}

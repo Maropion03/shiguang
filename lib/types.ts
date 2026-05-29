@@ -12,4 +12,5 @@ export type RecommendationRecord = {
   createdAt: number;
   answers: import("./questions").Answers;
   books: BookRecommendation[];
+  label?: string;   // 「此刻」四字标签,LLM 生成,可能为空
 };

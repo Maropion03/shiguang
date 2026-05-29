@@ -26,11 +26,16 @@ export async function generateMetadata({
     .slice(0, 3)
     .map((b) => `《${b.title}》`)
     .join(" ");
+  const prefix = rec.label ? `${rec.label} · ` : "";
   return {
-    title: `${titles} · 拾光`,
-    description: "为此刻的 ta 拾起的三本书",
+    title: `${prefix}${titles} · 拾光`,
+    description: rec.label
+      ? `${rec.label} — 为此刻的 ta 拾起的三本书`
+      : "为此刻的 ta 拾起的三本书",
     openGraph: {
-      title: `拾起这三本 · ${titles}`,
+      title: rec.label
+        ? `${rec.label} · 拾起这三本 · ${titles}`
+        : `拾起这三本 · ${titles}`,
       description: "为此刻的 ta 拾起的三本书",
       type: "article"
     }
@@ -68,6 +73,29 @@ export default async function ResultPage({
           <div className="zen-divider mx-auto w-16 mt-10" />
         </div>
 
+        {/* 此刻四字 —— LLM 为此次答题命名的状态雅称,可分享性强 */}
+        {rec.label && (
+          <div className="text-center mb-16">
+            <p className="text-ink-mist tracking-zen text-[11px] mb-5">
+              你的此刻
+            </p>
+            <div className="inline-flex gap-3 md:gap-5">
+              {rec.label.split("").map((ch, i) => (
+                <span
+                  key={i}
+                  className="font-serif text-ink text-3xl md:text-4xl leading-none w-12 h-14 md:w-14 md:h-16 inline-flex items-center justify-center border border-ink/25"
+                  style={{ transform: `rotate(${i % 2 === 0 ? -1 : 1}deg)` }}
+                >
+                  {ch}
+                </span>
+              ))}
+            </div>
+            <div className="mt-5 flex justify-center">
+              <span className="block w-1.5 h-1.5 rounded-full bg-vermilion" />
+            </div>
+          </div>
+        )}
+
         {/* 此刻语境 —— 给分享 visitor 看的发起者状态摘要 */}
         {prose.length > 0 && (
           <div className="mb-16 px-6 py-8 border-l-2 border-bamboo/40 bg-paper-warm/40">
@@ -88,7 +116,7 @@ export default async function ResultPage({
         {/* 书目 */}
         <div className="flex flex-col gap-12">
           {rec.books.map((book, i) => (
-            <BookCard key={i} book={book} index={i + 1} />
+            <BookCard key={i} book={book} index={i + 1} recId={rec.id} />
           ))}
         </div>
 

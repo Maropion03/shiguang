@@ -44,12 +44,14 @@ export default async function OG({ params }: { params: Promise<{ id: string }> }
   const authors = rec
     ? rec.books.slice(0, 3).map((b) => b.author)
     : fallback.authors;
+  const label = rec?.label || "";
 
   // 收集本图所有要渲染的字符,用作字体子集请求
   const allText =
-    "拾光 · 为此刻的你拾起的三本" +
+    "拾光 · 为此刻的你拾起的三本你此刻" +
     titles.join("") +
     authors.join("") +
+    label +
     "其一二三、《》";
   const fontData = await loadCJKFont(allText);
 
@@ -122,6 +124,59 @@ export default async function OG({ params }: { params: Promise<{ id: string }> }
         >
           为此刻的你 · 拾起这三本
         </div>
+
+        {/* 此刻四字标签 */}
+        {label && (
+          <div
+            style={{
+              marginTop: 32,
+              display: "flex",
+              alignItems: "center",
+              gap: 16
+            }}
+          >
+            <div
+              style={{
+                fontSize: 16,
+                color: "#6B635C",
+                letterSpacing: 6,
+                display: "flex"
+              }}
+            >
+              你此刻
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              {label.split("").map((ch, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: 52,
+                    height: 60,
+                    border: "2px solid #1F1A17",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 32,
+                    color: "#1F1A17",
+                    fontWeight: 500,
+                    transform: `rotate(${i % 2 === 0 ? -1 : 1}deg)`
+                  }}
+                >
+                  {ch}
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 999,
+                background: "#A33F2A",
+                display: "flex"
+              }}
+            />
+          </div>
+        )}
 
         <div
           style={{
