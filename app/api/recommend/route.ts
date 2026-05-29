@@ -56,19 +56,19 @@ export async function POST(req: NextRequest) {
   }
 
   // 调 LLM
-  let raw;
+  let rec;
   try {
-    raw = await generateRecommendations(answers, body.exclude);
+    rec = await generateRecommendations(answers, body.exclude);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "推荐生成失败";
     return NextResponse.json({ error: msg }, { status: 502 });
   }
-  if (raw.length === 0) {
+  if (rec.books.length === 0) {
     return NextResponse.json({ error: "AI 未返回有效推荐,请重试" }, { status: 502 });
   }
 
   // 豆瓣验证(失败不影响展示,只是标记 verified=false)
-  const verified = await verifyAll(raw);
+  const verified = await verifyAll(rec.books);
 
   const books: BookRecommendation[] = verified.map((v) => ({
     title: v.title,
@@ -83,7 +83,8 @@ export async function POST(req: NextRequest) {
     id: nanoid(10),
     createdAt: Date.now(),
     answers,
-    books
+    books,
+    label: rec.label || undefined
   };
 
   try {

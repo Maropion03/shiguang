@@ -54,7 +54,8 @@ function summarizeAnswers(a: Answers): string {
 const SYSTEM_PROMPT = `你是一位通晓中外文学、人文社科的资深书探,
 说话方式像京都茶室里的老书店店主:温和、克制、有审美。
 你的任务是根据读者此刻的心境与偏好,从【真实存在的、有中文版的书籍】中
-为TA挑出 3 本最契合此刻的书。
+为TA挑出 3 本最契合此刻的书,
+并为读者此刻的状态命名一个【四字标签】(像古人给一种心境起的雅称)。
 
 严格要求:
 1. 只推荐你确定真实存在、并有正式中文译本(或本身就是中文原版)的书。
@@ -65,9 +66,13 @@ const SYSTEM_PROMPT = `你是一位通晓中外文学、人文社科的资深书
 4. 每一本的"为什么推这本"必须紧扣读者的具体回答,
    引用TA话里的具体词,不要泛泛而谈。
 5. 文字简洁,有书卷气,避免营销腔。
+6. 四字标签必须正好 4 个汉字,有古典意象、不俗套(如「静水深流」「倦海拾贝」
+   「孤舟夜泊」「云破月来」之类),要扣住读者此刻的状态而非泛泛之词。
+   不要用「岁月静好」「人间值得」这类网红词。
 
 只用如下 JSON 格式回复,不要任何前后文、不要 markdown 代码块标记:
 {
+  "label": "四个汉字",
   "books": [
     {
       "title": "书名",
@@ -87,10 +92,15 @@ export type RawBook = {
   reason: string;
 };
 
+export type Recommendation = {
+  label: string;
+  books: RawBook[];
+};
+
 export async function generateRecommendations(
   answers: Answers,
   exclude?: string[]
-): Promise<RawBook[]> {
+): Promise<Recommendation> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     throw new Error("未配置 DEEPSEEK_API_KEY,请在环境变量中配置后再试");
@@ -129,7 +139,7 @@ export async function generateRecommendations(
   const content: string | undefined = data?.choices?.[0]?.message?.content;
   if (!content) throw new Error("DeepSeek 返回为空");
 
-  let parsed: { books?: RawBook[] };
+  let parsed: { label?: string; books?: RawBook[] };
   try {
     parsed = JSON.parse(content);
   } catch {
@@ -143,7 +153,11 @@ export async function generateRecommendations(
     throw new Error("LLM 未给出书目");
   }
 
-  return parsed.books
+  // label 只接受正好 4 个汉字;不合规则时留空,UI 自行降级不展示。
+  const rawLabel = (parsed.label || "").trim();
+  const label = /^[一-鿿]{4}$/.test(rawLabel) ? rawLabel : "";
+
+  const books = parsed.books
     .filter((b) => b && b.title && b.author)
     .slice(0, 3)
     .map((b) => ({
@@ -152,4 +166,6 @@ export async function generateRecommendations(
       oneLiner: String(b.oneLiner || "").trim(),
       reason: String(b.reason || "").trim()
     }));
+
+  return { label, books };
 }

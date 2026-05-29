@@ -1,15 +1,23 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import { currentSeason } from "@/lib/seasons";
+
+// ISR 每小时重生成——足以让"今日·节气"准确,又不放弃静态化的缓存收益。
+export const revalidate = 3600;
 
 export default function HomePage() {
+  const season = currentSeason();
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-prose w-full text-center animate-fade-in">
         <div className="flex justify-center mb-6">
           <Logo size={36} />
         </div>
-        <p className="text-ink-mist tracking-zen text-xs uppercase mb-12">
+        <p className="text-ink-mist tracking-zen text-xs uppercase mb-2">
           shíguāng · 拾光
+        </p>
+        <p className="text-ink-wash tracking-zen text-[10px] mb-12">
+          今日 · {season.name}
         </p>
 
         <h1 className="font-serif text-3xl md:text-4xl text-ink leading-relaxed mb-8 font-normal">

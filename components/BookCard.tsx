@@ -1,11 +1,14 @@
 import type { BookRecommendation } from "@/lib/types";
+import BookFeedback from "./BookFeedback";
 
 export default function BookCard({
   book,
-  index
+  index,
+  recId
 }: {
   book: BookRecommendation;
   index: number;
+  recId: string;
 }) {
   return (
     <article className="relative animate-fade-up">
@@ -33,7 +36,7 @@ export default function BookCard({
         </p>
       </div>
 
-      <div className="flex items-center gap-4 mt-6">
+      <div className="flex items-center gap-4 mt-6 flex-wrap">
         {book.verified && book.doubanUrl ? (
           <a
             href={book.doubanUrl}
@@ -50,6 +53,8 @@ export default function BookCard({
             · 未验证
           </span>
         )}
+        <span className="text-ink-wash/30 text-xs">·</span>
+        <BookFeedback recId={recId} bookIndex={index - 1} />
       </div>
     </article>
   );
